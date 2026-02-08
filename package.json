@@ -17,6 +17,12 @@
   "engines": {
     "node": ">=18"
   },
+  "pnpm": {
+    "overrides": {
+      "react": "19.1.0",
+      "react-dom": "19.1.0"
+    }
+  },
   "name": "with-react-native-web",
   "packageManager": "pnpm@10.9.0"
 }

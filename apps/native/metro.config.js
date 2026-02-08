@@ -17,6 +17,12 @@ config.resolver.nodeModulesPaths = [
   path.resolve(projectRoot, "node_modules"),
   path.resolve(workspaceRoot, "node_modules"),
 ]
+// 2.1 Ensure a single React instance for Expo web/native bundles.
+config.resolver.extraNodeModules = {
+  react: path.resolve(projectRoot, "node_modules/react"),
+  "react-dom": path.resolve(projectRoot, "node_modules/react-dom"),
+  "react-native": path.resolve(projectRoot, "node_modules/react-native"),
+}
 // 3. Force Metro to resolve (sub)dependencies only from the `nodeModulesPaths`
 config.resolver.disableHierarchicalLookup = true
 
