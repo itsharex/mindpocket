@@ -29,6 +29,8 @@ const MAX_FILE_SIZE = 50 * 1024 * 1024
 const FILE_EXT_REGEX = /\.[^.]+$/
 
 export async function POST(request: Request) {
+  console.log("[ingest] Received POST request", JSON.stringify(request), null, 2)
+
   const session = await auth.api.getSession({ headers: await headers() })
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -69,6 +71,7 @@ async function handleJsonIngest(request: Request, userId: string) {
       html: parsed.data.html,
       folderId: parsed.data.folderId,
       title: parsed.data.title,
+      clientSource: parsed.data.clientSource,
     })
     console.log("Ingest from extension result:", result)
     return NextResponse.json(result, { status: 201 })
@@ -86,6 +89,7 @@ async function handleJsonIngest(request: Request, userId: string) {
     url: parsed.data.url,
     folderId: parsed.data.folderId,
     title: parsed.data.title,
+    clientSource: parsed.data.clientSource,
   })
   return NextResponse.json(result, { status: 201 })
 }
@@ -95,9 +99,14 @@ async function handleFileUpload(request: Request, userId: string) {
   const file = formData.get("file") as File | null
   const folderId = formData.get("folderId") as string | null
   const title = formData.get("title") as string | null
+  const clientSource = formData.get("clientSource") as string | null
 
   if (!file) {
     return NextResponse.json({ error: "No file provided" }, { status: 400 })
+  }
+
+  if (!(clientSource && ["web", "mobile", "extension"].includes(clientSource))) {
+    return NextResponse.json({ error: "Invalid or missing clientSource" }, { status: 400 })
   }
 
   if (file.size > MAX_FILE_SIZE) {
@@ -114,6 +123,7 @@ async function handleFileUpload(request: Request, userId: string) {
     file,
     folderId: folderId ?? undefined,
     title: title ?? undefined,
+    clientSource,
   })
 
   return NextResponse.json(result, { status: 201 })

@@ -99,6 +99,7 @@ export function IngestDialog({ folders = [], onSuccess, trigger }: IngestDialogP
           url: url.trim(),
           folderId: folderId || undefined,
           title: title.trim() || undefined,
+          clientSource: "web",
         }),
       })
       const data = await res.json()
@@ -134,6 +135,7 @@ export function IngestDialog({ folders = [], onSuccess, trigger }: IngestDialogP
     try {
       const formData = new FormData()
       formData.append("file", selectedFile)
+      formData.append("clientSource", "web")
       if (folderId) {
         formData.append("folderId", folderId)
       }

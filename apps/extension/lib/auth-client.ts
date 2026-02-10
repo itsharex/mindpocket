@@ -74,6 +74,6 @@ export async function signOut() {
 export function saveBookmark(payload: { url: string; html: string; title?: string }) {
   return authFetch("/api/ingest", {
     method: "POST",
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ ...payload, clientSource: "extension" }),
   })
 }

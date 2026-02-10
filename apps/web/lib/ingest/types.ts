@@ -15,6 +15,9 @@ export type BookmarkType = (typeof BOOKMARK_TYPES)[number]
 export const SOURCE_TYPES = ["url", "file", "extension"] as const
 export type SourceType = (typeof SOURCE_TYPES)[number]
 
+export const CLIENT_SOURCES = ["web", "mobile", "extension"] as const
+export type ClientSource = (typeof CLIENT_SOURCES)[number]
+
 export const INGEST_STATUSES = ["pending", "processing", "completed", "failed"] as const
 export type IngestStatus = (typeof INGEST_STATUSES)[number]
 
@@ -22,6 +25,7 @@ export const ingestUrlSchema = z.object({
   url: z.string().url(),
   folderId: z.string().optional(),
   title: z.string().optional(),
+  clientSource: z.enum(CLIENT_SOURCES),
 })
 
 export const ingestExtensionSchema = z.object({
@@ -29,6 +33,7 @@ export const ingestExtensionSchema = z.object({
   html: z.string().min(1),
   title: z.string().optional(),
   folderId: z.string().optional(),
+  clientSource: z.enum(CLIENT_SOURCES),
 })
 
 export const EXTENSION_TYPE_MAP: Record<string, BookmarkType> = {

@@ -5,7 +5,7 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL || "http://127.0.0.1:3000"
 export async function saveBookmark(url: string, title?: string) {
   const response = await authClient.$fetch(`${API_URL}/api/ingest`, {
     method: "POST",
-    body: { url, title },
+    body: { url, title, clientSource: "mobile" },
   })
   return response.data
 }

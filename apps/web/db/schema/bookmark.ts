@@ -23,6 +23,7 @@ export const bookmark = pgTable(
     metadata: jsonb("metadata"),
     isFavorite: boolean("is_favorite").notNull().default(false),
     sourceType: text("source_type"),
+    clientSource: text("client_source").notNull().default("web"),
     fileUrl: text("file_url"),
     fileExtension: text("file_extension"),
     fileSize: integer("file_size"),

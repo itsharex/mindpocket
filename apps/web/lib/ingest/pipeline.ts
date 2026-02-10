@@ -23,6 +23,7 @@ interface IngestUrlParams {
   url: string
   folderId?: string
   title?: string
+  clientSource: string
 }
 
 interface IngestFileParams {
@@ -30,6 +31,7 @@ interface IngestFileParams {
   file: File
   folderId?: string
   title?: string
+  clientSource: string
 }
 
 interface IngestExtensionParams {
@@ -38,6 +40,7 @@ interface IngestExtensionParams {
   html: string
   folderId?: string
   title?: string
+  clientSource: string
 }
 
 function sanitizeForDb(str: string): string {
@@ -61,7 +64,7 @@ async function generateAndStoreEmbeddings(bookmarkId: string, content: string) {
 }
 
 export async function ingestFromUrl(params: IngestUrlParams): Promise<IngestResult> {
-  const { userId, url, folderId, title: userTitle } = params
+  const { userId, url, folderId, title: userTitle, clientSource } = params
   const bookmarkId = nanoid()
   const type = inferTypeFromUrl(url)
 
@@ -73,6 +76,7 @@ export async function ingestFromUrl(params: IngestUrlParams): Promise<IngestResu
     title: userTitle || url,
     url,
     sourceType: "url",
+    clientSource,
     platform: inferPlatform(url),
     ingestStatus: "pending" as IngestStatus,
   })
@@ -109,7 +113,7 @@ async function processIngestUrl(bookmarkId: string, url: string, userTitle?: str
 }
 
 export async function ingestFromFile(params: IngestFileParams): Promise<IngestResult> {
-  const { userId, file, folderId, title: userTitle } = params
+  const { userId, file, folderId, title: userTitle, clientSource } = params
   const bookmarkId = nanoid()
   const fileName = file.name
   const extMatch = fileName.match(FILE_EXT_REGEX)
@@ -123,6 +127,7 @@ export async function ingestFromFile(params: IngestFileParams): Promise<IngestRe
     type,
     title: userTitle || fileName,
     sourceType: "file",
+    clientSource,
     fileExtension,
     fileSize: file.size,
     ingestStatus: "pending" as IngestStatus,
@@ -178,7 +183,7 @@ async function processIngestFile(
 }
 
 export async function ingestFromExtension(params: IngestExtensionParams): Promise<IngestResult> {
-  const { userId, url, html, folderId, title: userTitle } = params
+  const { userId, url, html, folderId, title: userTitle, clientSource } = params
   const bookmarkId = nanoid()
   const platform = inferPlatform(url)
 
@@ -190,6 +195,7 @@ export async function ingestFromExtension(params: IngestExtensionParams): Promis
     title: userTitle || url,
     url,
     sourceType: "extension",
+    clientSource,
     platform,
     ingestStatus: "pending" as IngestStatus,
   })

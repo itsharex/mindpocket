@@ -1,8 +1,9 @@
 "use client"
 
-import type { UIMessage } from "ai"
+import { getToolName, isToolUIPart, type UIMessage } from "ai"
 import { Message, MessageContent, MessageResponse } from "@/components/ai-elements/message"
 import { Reasoning, ReasoningContent, ReasoningTrigger } from "@/components/ai-elements/reasoning"
+import { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput } from "@/components/ai-elements/tool"
 
 export function ChatMessage({
   message,
@@ -21,7 +22,7 @@ export function ChatMessage({
             return (
               <Reasoning isStreaming={isStreaming && index === message.parts.length - 1} key={key}>
                 <ReasoningTrigger />
-                <ReasoningContent>{part.reasoning}</ReasoningContent>
+                <ReasoningContent>{part.text}</ReasoningContent>
               </Reasoning>
             )
           }
@@ -37,6 +38,28 @@ export function ChatMessage({
                   src={part.url}
                 />
               </MessageContent>
+            )
+          }
+
+          if (isToolUIPart(part)) {
+            const toolName = getToolName(part)
+            return (
+              <Tool key={key}>
+                <ToolHeader
+                  state={part.state}
+                  title={toolName}
+                  type={part.type as `tool-${string}`}
+                />
+                <ToolContent>
+                  <ToolInput input={part.input} />
+                  {(part.state === "output-available" || part.state === "output-error") && (
+                    <ToolOutput
+                      errorText={part.state === "output-error" ? part.errorText : undefined}
+                      output={part.state === "output-available" ? part.output : undefined}
+                    />
+                  )}
+                </ToolContent>
+              </Tool>
             )
           }
 

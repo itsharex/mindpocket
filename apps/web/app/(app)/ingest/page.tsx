@@ -43,6 +43,7 @@ interface HistoryItem {
   title: string
   type: string
   sourceType: string | null
+  clientSource: string | null
   ingestStatus: string
   ingestError: string | null
   url: string | null
@@ -52,27 +53,18 @@ interface HistoryItem {
 
 type StatusFilter = "all" | "pending" | "processing" | "completed" | "failed"
 const MAX_URL_PREVIEW_LENGTH = 90
-const WWW_PREFIX_REGEX = /^www\./
 
 function getSourceLabel(item: HistoryItem, t: ReturnType<typeof useT>) {
-  if (item.sourceType === "file") {
-    return t.ingest.sourceFile
+  switch (item.clientSource) {
+    case "web":
+      return t.ingest.clientWeb
+    case "mobile":
+      return t.ingest.clientMobile
+    case "extension":
+      return t.ingest.clientExtension
+    default:
+      return t.ingest.sourceUnknown
   }
-
-  if (item.sourceType === "extension") {
-    return t.ingest.sourceExtension
-  }
-
-  if (item.url) {
-    try {
-      const { hostname } = new URL(item.url)
-      return hostname.replace(WWW_PREFIX_REGEX, "") || t.ingest.sourceUrl
-    } catch {
-      return t.ingest.sourceUrl
-    }
-  }
-
-  return t.ingest.sourceUnknown
 }
 
 interface FolderInfo {
@@ -187,6 +179,20 @@ function IngestForm({
   onSuccess: () => void
   t: ReturnType<typeof useT>
 }) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <div className="flex h-[400px] items-center justify-center">
+        <Loader2 className="size-6 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
   return (
     <div>
       <Tabs defaultValue="url">
@@ -248,6 +254,7 @@ function UrlIngestForm({
           url: trimmed,
           folderId: folderId || undefined,
           title: title.trim() || undefined,
+          clientSource: "web",
         }),
       })
       if (res.ok) {
@@ -325,6 +332,7 @@ function FileIngestForm({
     try {
       const formData = new FormData()
       formData.append("file", selectedFile)
+      formData.append("clientSource", "web")
       if (folderId) {
         formData.append("folderId", folderId)
       }
@@ -456,7 +464,7 @@ function BatchIngestForm({
           fetch("/api/ingest", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ url, folderId: folderId || undefined }),
+            body: JSON.stringify({ url, folderId: folderId || undefined, clientSource: "web" }),
           })
         )
       )
