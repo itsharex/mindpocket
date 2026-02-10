@@ -17,7 +17,7 @@ export async function fetchWithBrowser(url: string): Promise<string | null> {
           args: chromium.args,
           headless: "shell",
         }),
-        defaultViewport: chromium.defaultViewport,
+        defaultViewport: { width: 1920, height: 1080 },
         executablePath: await chromium.executablePath(),
         headless: "shell",
       })

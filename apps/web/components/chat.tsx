@@ -23,10 +23,6 @@ function getGreeting(): string {
   return "夜深了"
 }
 
-const transport = new DefaultChatTransport({
-  api: "/api/chat",
-})
-
 export function Chat({
   id,
   initialMessages = [],
@@ -41,16 +37,28 @@ export function Chat({
   const [useKnowledgeBase, setUseKnowledgeBase] = useState(true)
   const hasReplacedUrl = useRef(false)
   const greeting = useMemo(() => getGreeting(), [])
+  const selectedModelIdRef = useRef(selectedModelId)
+  selectedModelIdRef.current = selectedModelId
+  const useKnowledgeBaseRef = useRef(useKnowledgeBase)
+  useKnowledgeBaseRef.current = useKnowledgeBase
+
+  const transport = useMemo(
+    () =>
+      new DefaultChatTransport({
+        api: "/api/chat",
+        body: () => ({
+          selectedChatModel: selectedModelIdRef.current,
+          useKnowledgeBase: useKnowledgeBaseRef.current,
+        }),
+      }),
+    []
+  )
 
   const { messages, status, sendMessage, stop, resumeStream } = useChat({
     id,
     messages: initialMessages,
     transport,
     experimental_throttle: 50,
-    chatRequestBody: {
-      selectedChatModel: selectedModelId,
-      useKnowledgeBase,
-    },
     onError: (error) => {
       toast.error("发送失败", {
         description: error.message || "请稍后重试",

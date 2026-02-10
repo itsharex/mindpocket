@@ -1,7 +1,6 @@
 "use client"
 
-import type { ChatStatus } from "@ai-sdk/react"
-import type { UIMessage } from "ai"
+import type { ChatStatus, UIMessage } from "ai"
 import {
   Conversation,
   ConversationContent,

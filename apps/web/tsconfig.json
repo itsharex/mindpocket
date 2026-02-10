@@ -15,5 +15,5 @@
     ".next/types/**/*.ts",
     "app/sign-in"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "components/ai-elements"]
 }

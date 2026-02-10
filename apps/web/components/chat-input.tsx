@@ -1,6 +1,6 @@
 "use client"
 
-import type { ChatStatus } from "@ai-sdk/react"
+import type { ChatStatus } from "ai"
 import { BookOpen } from "lucide-react"
 import {
   Attachment,

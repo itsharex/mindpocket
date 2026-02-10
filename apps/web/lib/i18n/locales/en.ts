@@ -3,6 +3,7 @@ import type { TranslationDict } from "./zh"
 export const en: TranslationDict = {
   common: {
     settings: "Settings",
+    feedback: "Feedback",
     logout: "Log out",
     cancel: "Cancel",
     save: "Save",
