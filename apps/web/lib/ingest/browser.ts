@@ -1,5 +1,5 @@
 const CHROMIUM_PACK_URL =
-  "https://github.com/Sparticuz/chromium/releases/download/v143.0.0/chromium-v143.0.0-pack.tar"
+  "https://github.com/Sparticuz/chromium/releases/download/v143.0.0/chromium-v143.0.0-pack.x64.tar"
 
 export async function fetchWithBrowser(url: string): Promise<string | null> {
   let browser: import("puppeteer-core").Browser | null = null
