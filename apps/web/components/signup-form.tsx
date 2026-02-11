@@ -1,11 +1,11 @@
 "use client"
 
 import { Loader2 } from "lucide-react"
-import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
+import { AuthBrandDisplay } from "@/components/auth-brand-display"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
@@ -76,14 +76,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
             <div className="flex items-center justify-center p-6 md:p-8">
               <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
             </div>
-            <div className="relative hidden bg-muted md:block">
-              <Image
-                alt=""
-                className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-                fill
-                src="/placeholder.svg"
-              />
-            </div>
+            <AuthBrandDisplay />
           </CardContent>
         </Card>
       </div>
@@ -155,14 +148,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
               </Field>
             </FieldGroup>
           </form>
-          <div className="relative hidden bg-muted md:block">
-            <Image
-              alt=""
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-              fill
-              src="/placeholder.svg"
-            />
-          </div>
+          <AuthBrandDisplay />
         </CardContent>
       </Card>
     </div>

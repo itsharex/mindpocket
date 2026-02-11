@@ -3,9 +3,7 @@ import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { nextCookies } from "better-auth/next-js"
 import { bearer } from "better-auth/plugins/bearer"
-import { count } from "drizzle-orm"
 import { db } from "@/db/client"
-import { user } from "@/db/schema/auth"
 
 export const auth = betterAuth({
   baseURL:
@@ -40,23 +38,4 @@ export const auth = betterAuth({
   //   },
   // },
   plugins: [nextCookies(), bearer(), expo()],
-  hooks: {
-    before: [
-      {
-        matcher: (context) => {
-          return context.path === "/sign-up/email"
-        },
-        handler: async (context) => {
-          const result = await db.select({ count: count() }).from(user)
-          const userCount = result[0]?.count || 0
-
-          if (userCount > 0) {
-            throw new Error("注册已关闭，系统仅允许一个用户")
-          }
-
-          return context
-        },
-      },
-    ],
-  },
 })

@@ -1,10 +1,10 @@
 "use client"
 
 import { Loader2 } from "lucide-react"
-import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
+import { AuthBrandDisplay } from "@/components/auth-brand-display"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
@@ -77,14 +77,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
               </Field>
             </FieldGroup>
           </form>
-          <div className="relative hidden bg-muted md:block">
-            <Image
-              alt=""
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-              fill
-              src="/placeholder.svg"
-            />
-          </div>
+          <AuthBrandDisplay />
         </CardContent>
       </Card>
     </div>
