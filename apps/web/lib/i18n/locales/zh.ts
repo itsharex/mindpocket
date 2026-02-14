@@ -28,6 +28,8 @@ export const zh = {
     folderDeleteFailed: "删除文件夹失败",
     bookmarkDeleted: "书签已删除",
     bookmarkDeleteFailed: "删除书签失败",
+    bookmarkMoved: "已移动",
+    bookmarkMoveFailed: "移动失败",
     deleteChat: "删除对话",
     deleteFolder: "删除文件夹",
     deleteBookmark: "删除书签",

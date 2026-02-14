@@ -30,6 +30,8 @@ export const en: TranslationDict = {
     folderDeleteFailed: "Failed to delete folder",
     bookmarkDeleted: "Bookmark deleted",
     bookmarkDeleteFailed: "Failed to delete bookmark",
+    bookmarkMoved: "Moved",
+    bookmarkMoveFailed: "Failed to move",
     deleteChat: "Delete chat",
     deleteFolder: "Delete folder",
     deleteBookmark: "Delete bookmark",
